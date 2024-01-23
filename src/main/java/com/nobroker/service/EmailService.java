@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.nobroker.service.EmailVerificationService.emailOtpMapping; // static import
+
 @Service
 public class EmailService {
 
@@ -30,6 +32,11 @@ public class EmailService {
     public Map<String, String> sendOtpEmail(String email){  // key value pair storing like for this email this is the otp
 
         String otp = generateOtp();   // that otp is stored in this  variable //  calls  public String generateOtp()
+
+
+        emailOtpMapping.put(email,otp); //import static com.nobroker.service.EmailVerificationService.emailOtpMapping; // static import
+
+
         sendEmail(email,"otp for  Email verification", "your otp is :" +otp);//  calls  private void sendEmail(String to , String subject, String text)
 
         Map<String,String> response =  new HashMap<>();

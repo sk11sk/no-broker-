@@ -8,6 +8,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceIMPL implements UserService {
      @Autowired
@@ -28,12 +30,23 @@ public class UserServiceIMPL implements UserService {
     }
 
 
+
+
     User mapToEntity(UserDto userDto){
         User user = modelMapper.map(userDto, User.class);
 
         return user;
     }
 
+    @Override
+    public User getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        return user;
+    }
 
-
+    @Override
+    public void verifyEmail(User user) {
+        user.setEmailVerified(true);
+        userRepository.save(user);
+    }
 }

@@ -4,12 +4,10 @@ package com.nobroker.controller;
 
 import com.nobroker.payload.UserDto;
 import com.nobroker.service.EmailService;
+import com.nobroker.service.EmailVerificationService;
 import com.nobroker.service.UserService;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -22,9 +20,12 @@ public class RegistrationController {
 
     private EmailService emailService;
 
-    public RegistrationController(UserService userService, EmailService emailService) {
+    private EmailVerificationService emailVerificationService;
+
+    public RegistrationController(UserService userService, EmailService emailService, EmailVerificationService emailVerificationService) {
         this.userService = userService;
         this.emailService = emailService;
+        this.emailVerificationService = emailVerificationService;
     }
 
     //http://localhost:8080/api/register // this  url is mandatory to write like this for the better redability of the code and for  searching purpose
@@ -34,6 +35,13 @@ public class RegistrationController {
         Map<String, String> response = emailService.sendOtpEmail(userDto.getEmail());
         return response;
 
+    }
+
+    //http://localhost:8080/api/verify-otp?email=&otp=
+    @PostMapping("/verify-otp")
+    public  Map < String,String >  verifyOtp(@RequestParam String  email, @RequestParam String   otp){
+
+       return emailVerificationService.verifyOtp(email,otp);
     }
 
 }
