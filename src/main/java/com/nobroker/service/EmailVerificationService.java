@@ -12,16 +12,17 @@ import java.util.Map;
 public class EmailVerificationService {
 
     @Autowired
-   private UserService userService;
-    final static Map< String, String > emailOtpMapping = new HashMap<>();
+    private UserService userService;
+    final static Map< String, String > emailOtpMapping = new HashMap<>();  // static import so as to store   otp before sending  the email
     public Map< String, String >  verifyOtp(String email, String otp) {
-        String storedOtp = emailOtpMapping.get(email);
-        Map<String ,String> response = new HashMap<>();
+        String storedOtp = emailOtpMapping.get(email);      // stored otp before sending  the email {emailOtpMapping.get( Object key); }
 
-        if(storedOtp != null &&storedOtp.equals(otp)){
-            User user = userService.getUserByEmail(email);
-            if(user!= null ){
-                userService.verifyEmail(user);
+        Map<String ,String> response = new HashMap<>();   // creating new hashmap to set return a response
+
+        if(storedOtp != null &&storedOtp.equals(otp)){    // stored otp and provided otp by the  user matches ???
+            User user = userService.getUserByEmail(email);  //  get the user by this provided email from the db
+            if(user!= null ){                                // if the user exists by that email this User object cant be null
+                userService.verifyEmail(user);   // setting verifyEmail field to true
                 response.put("status", "success");
                 response.put("message", "Email verified successfully");
             }else{
