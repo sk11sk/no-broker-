@@ -29,7 +29,7 @@ public class EmailService {
 
     }
 
-    public Map<String, String> sendOtpEmail(String email){  // key value pair storing like for this email this is the otp
+    public Map<String, String> sendOtpForEmailVerification(String email){  // key value pair storing like for this email this is the otp
 
         String otp = generateOtp();   // that otp is stored in this  variable //  calls  public String generateOtp()
 
@@ -45,6 +45,28 @@ public class EmailService {
 
         return response;
     }
+
+
+
+    public Map<String, String> sendOtpForLogin(String email){  // key value pair storing like for this email this is the otp
+
+        String otp = generateOtp();   // that otp is stored in this  variable //  calls  public String generateOtp()
+
+
+        emailOtpMapping.put(email,otp); //import static com.nobroker.service.EmailVerificationService.emailOtpMapping; // static import
+
+
+        sendEmail(email," otp for  Login", "your otp is :" +otp);//  calls  private void sendEmail(String to , String subject, String text)
+
+        Map<String,String> response =  new HashMap<>();
+        response.put("status","success");
+        response.put("message","otp sent sucessfully");
+
+        return response;
+    }
+
+
+    
 
     private void sendEmail(String to , String subject, String text){  //  sending of email is done
 

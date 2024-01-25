@@ -10,19 +10,23 @@ import java.util.Map;
 
 @Service
 public class EmailVerificationService {
-
+    @Autowired
+    private EmailService emailService;
     @Autowired
     private UserService userService;
     final static Map< String, String > emailOtpMapping = new HashMap<>();  // static import so as to store   otp before sending  the email
-    public Map< String, String >  verifyOtp(String email, String otp) {
+
+
+    public Map< String, String >  verifyOtpForEmailVerification(String email, String otp) {
         String storedOtp = emailOtpMapping.get(email);      // stored otp before sending  the email {emailOtpMapping.get( Object key); }
 
         Map<String ,String> response = new HashMap<>();   // creating new hashmap to set return a response
 
-        if(storedOtp != null &&storedOtp.equals(otp)){    // stored otp and provided otp by the  user matches ???
+        if(storedOtp != null && storedOtp.equals(otp)){    // stored otp and provided otp by the  user matches ???
             User user = userService.getUserByEmail(email);  //  get the user by this provided email from the db
             if(user!= null ){                                // if the user exists by that email this User object cant be null
-                userService.verifyEmail(user);   // setting verifyEmail field to true
+                userService.verifyEmail(user);            // setting verifyEmail field to true
+                emailOtpMapping.remove(email);    // bug fixing (otp should not work for more than  one email verification request )
                 response.put("status", "success");
                 response.put("message", "Email verified successfully");
             }else{
@@ -33,6 +37,46 @@ public class EmailVerificationService {
             response.put("status", "error");
             response.put("message", "Invalid OTP");
         }
+        return response;
+    }
+
+
+
+
+
+    public Map<String, String> sendOtpForUserLogin(String email) {
+        if (userService.isEmailVerified(email)) {  ////only verified emails  are eligible for login
+
+
+            // Send OTP to the user's email
+            emailService.sendOtpForLogin(email); // generate otp and send otp to email and also stores  the email and otp in hashmap
+
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "success");
+            response.put("message", "OTP sent successfully");
+            return response;
+        } else {
+            Map<String, String> response = new HashMap<>();
+            response.put("status", "error");
+            response.put("message", "Email is not verified");
+            return response;
+        }
+    }
+
+    public Map<String, String> verifyOtpForUserLogin(String email, String otp) {
+        String storedOtp = emailOtpMapping.get(email);
+
+        Map<String, String> response = new HashMap<>();
+        if (storedOtp != null && storedOtp.equals(otp)) {
+            emailOtpMapping.remove(email);
+            response.put("status", "success");
+            response.put("message", "OTP verified successfully");
+        } else {
+            // Invalid OTP
+            response.put("status", "error");
+            response.put("message", "Invalid OTP");
+        }
+
         return response;
     }
 }

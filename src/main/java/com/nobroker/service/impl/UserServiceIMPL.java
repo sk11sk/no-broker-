@@ -29,14 +29,13 @@ public class UserServiceIMPL implements UserService {
 
     }
 
-
-
-
     User mapToEntity(UserDto userDto){
         User user = modelMapper.map(userDto, User.class);
 
         return user;
     }
+
+
 
     @Override
     public User getUserByEmail(String email) {
@@ -48,5 +47,22 @@ public class UserServiceIMPL implements UserService {
     public void verifyEmail(User user) {
         user.setEmailVerified(true);
         userRepository.save(user);
+    }
+
+
+
+
+
+
+
+
+
+
+    public boolean isEmailVerified(String email) {
+
+        User user = userRepository.findByEmail(email);
+
+        return user != null && user.isEmailVerified();
+
     }
 }

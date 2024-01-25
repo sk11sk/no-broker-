@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.nobroker</groupId>
-	<artifactId>nobroker</artifactId>
+	<artifactId>SelfNoBroker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>nobroker</name>
 	<description>Real Estate project </description>
@@ -55,6 +55,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>5.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>5.0.0</version>
 		</dependency>
 	</dependencies>
 

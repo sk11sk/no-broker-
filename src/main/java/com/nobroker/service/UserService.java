@@ -12,4 +12,6 @@ public interface UserService {
     User getUserByEmail(String email);
 
     void verifyEmail(User user);
+
+    public boolean isEmailVerified(String email) ;
 }

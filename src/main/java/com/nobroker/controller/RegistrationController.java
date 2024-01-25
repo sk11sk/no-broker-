@@ -32,16 +32,17 @@ public class RegistrationController {
     @PostMapping("/register")
     public Map<String,String> createUser(@RequestBody UserDto userDto){
            userService.createUser(userDto);
-        Map<String, String> response = emailService.sendOtpEmail(userDto.getEmail());
+        Map<String, String> response = emailService.sendOtpForEmailVerification(userDto.getEmail());
         return response;
 
     }
+
 
     //http://localhost:8080/api/verify-otp?email=&otp=
     @PostMapping("/verify-otp")
     public  Map < String,String >  verifyOtp(@RequestParam String  email, @RequestParam String   otp){
 
-       return emailVerificationService.verifyOtp(email,otp);
+       return emailVerificationService.verifyOtpForEmailVerification(email,otp);
     }
 
 }
