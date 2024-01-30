@@ -12,7 +12,7 @@ import lombok.Data;
 import java.time.LocalDate;
 
 @Entity
-@Table(name="owner_plan")
+@Table(name="subscription_details")
 @Data
 public class SubscriptionDetails {
     @Id
