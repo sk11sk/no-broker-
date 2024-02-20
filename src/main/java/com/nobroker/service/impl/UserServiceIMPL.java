@@ -61,8 +61,13 @@ public class UserServiceIMPL implements UserService {
     public boolean isEmailVerified(String email) {
 
         User user = userRepository.findByEmail(email);
+        boolean emailVerified = user.isEmailVerified();   //just type user.  it will show you this boolean field as it is bollean in nature
+                                                          // it doesnt  shows GetEmailVerified it shows isEmailVerified
+                                                           //like SET , Get method of enitity object . it determines
+                                                           //emailVerified  column in sql table if it is zero means  false , 1 means true
 
-        return user != null && user.isEmailVerified();
+
+        return user != null && emailVerified;
 
     }
 }
